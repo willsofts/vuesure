@@ -4,10 +4,12 @@ import { startWaiting, stopWaiting, submitFailure, alertDialog }  from '@willsof
 import { getApiUrl, getBaseUrl, DEFAULT_CONTENT_TYPE } from "@willsofts/will-app";
 
 var ssoCallback;
+var sso_current_domainid;
 export function setSSOCallback(callback) {
     ssoCallback = callback;
 }
 export function startSSO(domainid,callback) {
+    sso_current_domainid = domainid;
     setSSOCallback(callback);
     startWaiting();
     $.ajax({
@@ -91,11 +93,12 @@ export function ssoSelectAccount(response) {
         console.warn("Multiple accounts detected.");
     } else if (currentAccounts.length === 1) {
         ssoSignedIn = true;
-        username = currentAccounts[0].username;
+        let acct = currentAccounts[0];
+        username = acct.username;
         if(!username || username=="") {
             if(response) username = response.account.idTokenClaims.given_name;
         }
-        tryLogIn(username);
+        tryLogIn(username,acct.tenantId);
     }
 }
 export function ssoHandleResponse(response) {
@@ -106,7 +109,7 @@ export function ssoHandleResponse(response) {
         if(!username || username=="") {
             username = response.account.idTokenClaims.given_name;
         }
-        tryLogIn(username);
+        tryLogIn(username,response.tenantId,response.accessToken);
     } else {
         ssoSelectAccount(response);
     }
@@ -156,12 +159,13 @@ export function getTokenPopup(request) {
             }
     });
 }
-export function tryLogIn(username) {
+export function tryLogIn(username,tenant,token) {
+    console.log("tryLogin: username="+username+", domainid="+sso_current_domainid+", tenant="+tenant+", token="+token);
     startWaiting();
     $.ajax({
         url: getApiUrl()+"/api/sign/access",
         type: "POST",
-        data: JSON.stringify({username: username}), 
+        data: JSON.stringify({username: username, domainid: sso_current_domainid, accesstoken: token}), 
         dataType: "json",
         contentType: DEFAULT_CONTENT_TYPE,
         error : function(transport,status,errorThrown) { 
