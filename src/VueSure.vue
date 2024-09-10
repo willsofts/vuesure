@@ -21,6 +21,7 @@ import { removeAccessorInfo } from "@willsofts/will-app";
 import { accessor } from "@/assets/js/accessor.js";
 import { favorite } from "@/assets/js/favorite.js";
 import { isSSOSignedIn, doSSOLogout } from "@/assets/js/auth.js";
+import { startReceiveBroadcast } from "@/assets/js/bc.js";
 import HeaderBar from "./components/menu/HeaderBar.vue";
 import LoginForm from "./components/form/LoginForm.vue";
 import WorkerFrame from "./components/WorkerFrame.vue";
@@ -89,6 +90,7 @@ export default {
           this.currentForcePage = ChangeForm;
         } else {
           this.displayMenu();
+          startReceiveBroadcast();
         }
     },
     setAccessInfo(info) {

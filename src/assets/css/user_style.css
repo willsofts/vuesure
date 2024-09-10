@@ -18,7 +18,7 @@
 	font-weight : bold;
 }
 #login_logo_label {
-	font-size: 85px;
+	font-size: 55px;
 	font-weight: bold;
 	color: #41B883;
 	text-shadow: 3px 7px 7px darkgrey;
@@ -159,3 +159,5 @@ table.partition-table { background-color: #41B883; }
 .program-controlbar {
 	background-color: #41B883; 
 }
+.pass-word { color: darkcyan; font-style: italic; }
+.go-word { color: lightseagreen; font-style: italic; }
