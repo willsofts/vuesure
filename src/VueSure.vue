@@ -21,7 +21,7 @@ import { removeAccessorInfo } from "@willsofts/will-app";
 import { accessor } from "@/assets/js/accessor.js";
 import { favorite } from "@/assets/js/favorite.js";
 import { isSSOSignedIn, doSSOLogout } from "@/assets/js/auth.js";
-import { startReceiveBroadcast } from "@/assets/js/bc.js";
+import { startReceiveBroadcast, stopReceiveBroadcast } from "@/assets/js/bc.js";
 import HeaderBar from "./components/menu/HeaderBar.vue";
 import LoginForm from "./components/form/LoginForm.vue";
 import WorkerFrame from "./components/WorkerFrame.vue";
@@ -138,6 +138,7 @@ export default {
       if(isSSOSignedIn()) {
         doSSOLogout();
       }
+      stopReceiveBroadcast();
     },
     goLogIn() {
       this.isShowing = true;

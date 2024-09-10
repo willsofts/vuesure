@@ -1,11 +1,13 @@
 import $ from "jquery"
 import io from "socket.io-client";
 import { getChatUrl } from "@willsofts/will-app";
+
+let socket = null;
 export function startReceiveBroadcast() {
     let chat_url = getChatUrl();
     console.log("start receive bc: ",chat_url);
     if(chat_url && chat_url.trim().length > 0) {
-        var socket = io(chat_url);
+        socket = io(chat_url);
         socket.on('broadcast-message', function(msg) {
             console.log("broadcast-message:",msg);
             let div = $("<div class='bc-layer'></div>");
@@ -21,4 +23,7 @@ export function startReceiveBroadcast() {
             div.append(link).append(span).appendTo(body);
         });
     }
+}
+export function stopReceiveBroadcast() {
+    if(socket) socket.disconnect();
 }
