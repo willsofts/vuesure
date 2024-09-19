@@ -3,8 +3,8 @@ import io from "socket.io-client";
 import { getChatUrl } from "@willsofts/will-app";
 
 let socket = null;
-export function startReceiveBroadcast() {
-    let chat_url = getChatUrl();
+export function startReceiveBroadcast(chat_url) {
+    if(!chat_url) chat_url = getChatUrl();
     console.log("start receive bc: ",chat_url);
     if(chat_url && chat_url.trim().length > 0) {
         socket = io(chat_url);

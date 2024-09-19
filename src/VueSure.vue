@@ -16,7 +16,7 @@
 import { ref } from 'vue';
 import { startApplication }  from '@willsofts/will-app';
 import { getLabelModel } from "@willsofts/will-app";
-import { refreshScreen, logOut, validAccessToken, openPage } from "@/assets/js/login.util.js";
+import { refreshScreen, logOut, validAccessToken, openPage, loadAppConfig } from "@/assets/js/login.util.js";
 import { removeAccessorInfo } from "@willsofts/will-app";
 import { accessor } from "@/assets/js/accessor.js";
 import { favorite } from "@/assets/js/favorite.js";
@@ -43,6 +43,9 @@ export default {
     let currentForcePage = ref("BlankForm");
     let mode = ref("");
     return { labels, accessor, favorite, isShowing, loginVisible, menuVisible, workingVisible, currentForcePage, mode };
+  },
+  created() {
+    loadAppConfig();
   },
   mounted() {
     console.log("App: on mounted ...");
