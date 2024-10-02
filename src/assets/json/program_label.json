@@ -67,6 +67,7 @@
 			{"name": "email_label", "value": "Email"},
 			{"name": "mobile_label", "value": "Mobile"},
 			{"name": "lineid_label", "value": "Line ID"},
+			{"name": "langcode_label", "value": "Display Language"},
 			{"name": "changepassword_caption", "value": "Change Password"},
 			{"name": "oldpassword_label", "value": "Old Password"},
 			{"name": "userpassword_label", "value": "New Password"},
