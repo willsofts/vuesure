@@ -67,10 +67,10 @@ export default {
         return item.type=='new' ? getImgUrl()+"/img/apps/favorite.png" : getImgUrl()+"/img/apps/application.png";
     },
     getDisplayFavorName(item) {
-        return this.accessor.lang === 'EN' ? item.shortname : item.shortnameth;
+        return this.accessor.lang === 'TH' ? item.shortnameth : item.shortname;
     },
     getDisplayProgramName(item) {
-        return this.accessor.lang === 'EN' ? item.shortname : item.shortnameth;
+        return this.accessor.lang === 'TH' ? item.shortnameth : item.shortname;
     },
     setting() {
         console.log("FavorMenu: setting, accessor",this.accessor);

@@ -26,10 +26,10 @@ export default {
         return item.groupstyle && item.groupstyle.trim().length > 0 ? item.groupstyle : "fa fa-tasks";
     },
     getDisplayGroupName(item) {
-        return this.$props.lang === 'EN' ? item.nameen : item.nameth;
+        return this.$props.lang === 'TH' ? item.nameth : item.nameen;
     },
     getDisplayProgramName(item) {
-        return this.$props.lang === 'EN' ? item.progname : item.prognameth;
+        return this.$props.lang === 'TH' ? item.prognameth : item.progname;
     },
     itemMenuSelected(item) {
         console.log("SideMenu.vue: menu item selected",item);

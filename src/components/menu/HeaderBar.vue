@@ -47,8 +47,9 @@
                     <strong class="fa fa-caret-down caret-down"></strong>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li><a href="javascript:void(0)" class="dropdown-item" id="linklangen" @click="changeLanguage('EN')"><img class="img-lang img-lang-EN" title="English"/><span id="englishlanguage" class="lang-word">{{ labels.english_lang }}</span></a></li>
-                    <li><a href="javascript:void(0)" class="dropdown-item" id="linklangth"  @click="changeLanguage('TH')"><img class="img-lang img-lang-TH" title="Thai"/><span id="thailanguage" class="lang-word">{{ labels.thai_lang }}</span></a></li>
+                    <li v-for="item in multiLanguages" :key="item.lang">
+                        <a href="javascript:void(0)" @click="changeLanguage(item.lang)" class="dropdown-item"><img class="img-lang" :class="'img-lang-' + item.lang" /><span class="lang-word">{{ labels[item.label] }}</span></a>
+                    </li>
                 </ul>
             </li>
             <FavorMenu ref="favorMenu" :visible="favorVisible" />
@@ -63,7 +64,7 @@ import { ref } from 'vue';
 import SiderBar from "./SiderBar.vue";
 import FavorMenu from "./FavorMenu.vue";
 import RecentMenu from "./RecentMenu.vue";
-import { setDefaultLanguage } from "@willsofts/will-app";
+import { setDefaultLanguage, getMultiLanguagesModel, registerNotification } from "@willsofts/will-app";
 import { accessor } from "@/assets/js/accessor.js";
 
 export default {
@@ -79,7 +80,16 @@ export default {
   setup() {
     const languageVisible = ref(true);
     const favorVisible = ref(true);
-    return { accessor, languageVisible, favorVisible };
+    const multiLanguages = ref(getMultiLanguagesModel());
+    return { accessor, languageVisible, favorVisible, multiLanguages };
+  },
+  created() {
+    registerNotification((action,data) => {
+        console.log("registerNotification: "+action,data);
+        if("multi-languages"==action) {
+            this.multiLanguages = getMultiLanguagesModel(data);
+        }
+    });
   },
   computed: {
     accessorFullName() { 

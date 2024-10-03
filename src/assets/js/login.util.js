@@ -1,6 +1,6 @@
 import $ from "jquery"
-import { startWaiting, openNewWindow, submitWindow, closeChildWindows}  from '@willsofts/will-app'
-import { getApiUrl, getBaseUrl, getDefaultLanguage,  DEFAULT_CONTENT_TYPE } from "@willsofts/will-app";
+import { startWaiting, openNewWindow, submitWindow, closeChildWindows, getMultiLanguages }  from '@willsofts/will-app'
+import { getApiUrl, getBaseUrl, getDefaultLanguage,  DEFAULT_CONTENT_TYPE, setMultiLanguages } from "@willsofts/will-app";
 import { getAccessorToken, removeAccessorInfo, getAccessorInfo, saveAccessorInfo, getStorage, removeStorage, setupDiffie, setCurrentWindow } from "@willsofts/will-app";
 import { setApiUrl, setBaseUrl, setCdnUrl, setImgUrl, setDefaultLanguage, setApiToken, setBaseStorage, setSecureStorage, setBaseCss, setChatUrl } from "@willsofts/will-app";
 import { getBaseStorage, isSecureStorage, getCdnUrl, getImgUrl, getBaseCss, getChatUrl, getDefaultRawParameters, setDefaultRawParameters, createLinkStyle } from "@willsofts/will-app";
@@ -186,9 +186,10 @@ export function loadAppConfig() {
         if(data.SECURE_STORAGE !== undefined) setSecureStorage(data.SECURE_STORAGE);
         if(data.BASE_CSS !== undefined) setBaseCss(data.BASE_CSS);
         if(data.CHAT_URL !== undefined) setChatUrl(data.CHAT_URL);
+        if(data.MULTI_LANGUAGES !== undefined) setMultiLanguages(data.MULTI_LANGUAGES);
 		if(data.DEFAULT_RAW_PARAMETERS !== undefined) setDefaultRawParameters(data.DEFAULT_RAW_PARAMETERS);
         console.info("loadAppConfig: DEFAULT_LANGUAGE="+getDefaultLanguage(),", BASE_STORAGE="+getBaseStorage(),", DEFAULT_RAW_PARAMETERS="+getDefaultRawParameters(),", SECURE_STORAGE="+isSecureStorage());
-        console.info("loadAppConfig: API_URL="+getApiUrl(),", BASE_URL="+getBaseUrl(),", CDN_URL="+getCdnUrl(),", IMG_URL="+getImgUrl()+", BASE_CSS="+getBaseCss()+", CHAT_URL="+getChatUrl());
+        console.info("loadAppConfig: API_URL="+getApiUrl(),", BASE_URL="+getBaseUrl(),", CDN_URL="+getCdnUrl(),", IMG_URL="+getImgUrl()+", BASE_CSS="+getBaseCss()+", CHAT_URL="+getChatUrl()+", MULTI_LANGUAGES="+getMultiLanguages());
         createLinkStyle(getBaseCss());
 	}).catch(err => console.error(err));
 }

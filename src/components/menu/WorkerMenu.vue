@@ -45,7 +45,7 @@ export default {
         return getImgUrl()+"/img/apps/application.png";
     },
     getDisplayAppName(item) {
-        return this.accessor.lang === 'EN' ? item.shortname : item.shortnameth;
+        return this.accessor.lang === 'TH' ? item.shortnameth : item.shortname;
     },
     openAppClick(item) {
       openPage(item,this.accessor,this.favorite);

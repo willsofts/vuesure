@@ -236,7 +236,7 @@ export default {
         });	
     },
     getDisplayLanguageName(item) {
-        return this.accessor.lang === 'EN' ? item.nameen : item.nameth;
+        return this.accessor.lang === 'TH' ? item.nameth : item.nameth;
     },
     async saveClick() {
       console.log("click: save");

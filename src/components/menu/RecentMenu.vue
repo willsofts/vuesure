@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     getDisplayRecentName(item) {
-        return this.accessor.lang === 'EN' ? item.progname : item.prognameth;
+        return this.accessor.lang === 'TH' ? item.prognameth : item.progname;
     },
     openAppClick(item) {
       openPage(item,this.accessor,this.favorite);
