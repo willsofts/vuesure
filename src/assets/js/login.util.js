@@ -176,20 +176,30 @@ export function doAfterLogin(json,callback) {
 export function loadAppConfig() {
 	fetch("app.config.json").then(response => response.json()).then(data => {
 		console.log("app.config.json",data);
-        if(data.API_URL !== undefined) setApiUrl(data.API_URL);
-        if(data.BASE_URL !== undefined) setBaseUrl(data.BASE_URL);
-        if(data.CDN_URL !== undefined) setCdnUrl(data.CDN_URL);
-        if(data.IMG_URL !== undefined) setImgUrl(data.IMG_URL);
-        if(data.DEFAULT_LANGUAGE !== undefined) setDefaultLanguage(data.DEFAULT_LANGUAGE);
-        if(data.API_TOKEN !== undefined) setApiToken(data.API_TOKEN);
-        if(data.BASE_STORAGE !== undefined) setBaseStorage(data.BASE_STORAGE);
-        if(data.SECURE_STORAGE !== undefined) setSecureStorage(data.SECURE_STORAGE);
-        if(data.BASE_CSS !== undefined) setBaseCss(data.BASE_CSS);
-        if(data.CHAT_URL !== undefined) setChatUrl(data.CHAT_URL);
-        if(data.MULTI_LANGUAGES !== undefined) setMultiLanguages(data.MULTI_LANGUAGES);
-		if(data.DEFAULT_RAW_PARAMETERS !== undefined) setDefaultRawParameters(data.DEFAULT_RAW_PARAMETERS);
-        console.info("loadAppConfig: DEFAULT_LANGUAGE="+getDefaultLanguage(),", BASE_STORAGE="+getBaseStorage(),", DEFAULT_RAW_PARAMETERS="+getDefaultRawParameters(),", SECURE_STORAGE="+isSecureStorage());
-        console.info("loadAppConfig: API_URL="+getApiUrl(),", BASE_URL="+getBaseUrl(),", CDN_URL="+getCdnUrl(),", IMG_URL="+getImgUrl()+", BASE_CSS="+getBaseCss()+", CHAT_URL="+getChatUrl()+", MULTI_LANGUAGES="+getMultiLanguages());
-        createLinkStyle(getBaseCss());
+		assignAppConfig(data);
 	}).catch(err => console.error(err));
+}
+export function assignAppConfig(data) {
+	console.log("appConfig: data",data);
+	if(!data) return;
+	if(data.API_URL !== undefined) setApiUrl(data.API_URL);
+	if(data.BASE_URL !== undefined) setBaseUrl(data.BASE_URL);
+	if(data.CDN_URL !== undefined) setCdnUrl(data.CDN_URL);
+	if(data.IMG_URL !== undefined) setImgUrl(data.IMG_URL);
+	if(data.DEFAULT_LANGUAGE !== undefined) setDefaultLanguage(data.DEFAULT_LANGUAGE);
+	if(data.API_TOKEN !== undefined) setApiToken(data.API_TOKEN);
+	if(data.BASE_STORAGE !== undefined) setBaseStorage(data.BASE_STORAGE);
+	if(data.SECURE_STORAGE !== undefined) setSecureStorage(data.SECURE_STORAGE);
+	if(data.BASE_CSS !== undefined) setBaseCss(data.BASE_CSS);
+	if(data.CHAT_URL !== undefined) setChatUrl(data.CHAT_URL);
+	if(data.MULTI_LANGUAGES !== undefined) setMultiLanguages(data.MULTI_LANGUAGES);
+	if(data.DEFAULT_RAW_PARAMETERS !== undefined) setDefaultRawParameters(data.DEFAULT_RAW_PARAMETERS);
+	console.info("appConfig: DEFAULT_LANGUAGE="+getDefaultLanguage(),", BASE_STORAGE="+getBaseStorage(),", DEFAULT_RAW_PARAMETERS="+getDefaultRawParameters(),", SECURE_STORAGE="+isSecureStorage());
+	console.info("appConfig: API_URL="+getApiUrl(),", BASE_URL="+getBaseUrl(),", CDN_URL="+getCdnUrl(),", IMG_URL="+getImgUrl()+", BASE_CSS="+getBaseCss()+", CHAT_URL="+getChatUrl()+", MULTI_LANGUAGES="+getMultiLanguages());
+	createLinkStyle(getBaseCss());
+}
+export function initAppConfig() {
+	try {
+		assignAppConfig(window.getAppConfigs());
+	} catch(ex) { console.error(ex); }
 }
