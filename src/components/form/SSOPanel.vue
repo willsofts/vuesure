@@ -43,8 +43,20 @@ export default {
     });
   },
   methods: {
+    enableSSO() {
+        try {
+            let appcfg = window.getAppConfigs();
+            if(appcfg) return appcfg.ALLOW_AUTHEN_SAML=="true";
+        } catch(ex) { console.error(ex); }
+        return false;
+    },
     setting() {
         console.log("SSOPanel.vue: setting ...");
+        if(!this.enableSSO()) {
+            this.loadingVisible = false;
+            this.$emit("sso-setting",this.ssolists);
+            return;
+        }
         this.loadSettings();
     },
     loadSettings() {
