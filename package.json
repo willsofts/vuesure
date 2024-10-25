@@ -4,8 +4,8 @@
   "description": "This project is login application",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "node build.config.js && vue-cli-service serve",
+    "build": "node build.config.js && vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

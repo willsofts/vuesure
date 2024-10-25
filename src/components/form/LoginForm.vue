@@ -62,7 +62,14 @@
     </div>
   </div>
 </div>
+<div id="loginfooterlayer">
+<label id="buildversionlabel">Build: {{ buildVersion }}</label>
+</div>
 </template>
+<style>
+#loginfooterlayer { position: fixed; left: 0; bottom: 0; }
+#buildversionlabel { font-size: 0.5rem; color: navy; padding-left: 5px; }
+</style>
 <script>
 import $ from "jquery";
 import { ref, computed } from 'vue';
@@ -74,11 +81,11 @@ import { saveAccessorInfo, setupDiffie } from "@willsofts/will-app";
 import { startSSO } from "@/assets/js/auth.js";
 import SSOPanel from "./SSOPanel.vue";
 
+const buildVersion = process.env.VUE_APP_BUILD_DATETIME;
 const formData = {
     username: '',
     password: '',
 };
-
 export default {
   components: { SSOPanel },
   props: {
@@ -109,7 +116,7 @@ export default {
     });
     const v$ = useVuelidate(validateRules, localData, { $lazy: true, $autoDirty: true });
     const hasSSO = ref(true);
-    return { v$, localInfo, localData, reqalert, hasSSO };
+    return { buildVersion, v$, localInfo, localData, reqalert, hasSSO };
   },
   mounted() {
     this.$nextTick(() => {
