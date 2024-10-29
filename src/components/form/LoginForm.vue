@@ -61,9 +61,9 @@
       </div>
     </div>
   </div>
-</div>
-<div id="loginfooterlayer">
-<label id="buildversionlabel">Build: {{ buildVersion }}</label>
+  <div id="loginfooterlayer">
+    <label id="buildversionlabel">Build: {{ buildVersion }}</label>
+  </div>
 </div>
 </template>
 <style>
