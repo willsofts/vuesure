@@ -24,19 +24,19 @@
                   <br/>     
                   <label id="login_label" class="login-label">{{ labels.login_label }}</label>   
                   <br/>  
-                  <div class="input-group-name login-input-field">
+                  <div class="input-group-name login-input-field has-validation" :class="{'has-error': v$.username.$error}">
                       <i class="fa fa-user login-icon"></i>
                       <input ref="main_username" type="text" v-model="localData.username" id="main_username" name="username" class="form-control input-md" maxlength="60" required />
                       <label id="login_user_label" class="login-label">{{ labels.username_label }}</label>
-                      <span v-if="v$.username.$error" class="has-error">{{ v$.username.$errors[0].$message }}</span>
                   </div>
+                  <span v-if="v$.username.$error" class="has-error span-error">{{ v$.username.$errors[0].$message }}</span>
                   <br/>
-                  <div class="input-group-password login-input-field">
+                  <div class="input-group-password login-input-field has-validation" :class="{'has-error': v$.password.$error}">
                       <i class="fa fa-lock login-icon"></i>
                       <input ref="main_pass" type="password" v-model="localData.password" id="main_pass" name="password" class="form-control input-md" autocomplete="off" required />
                       <label id="login_password_label" class="login-label">{{ labels.password_label }}</label>
-                      <span v-if="v$.password.$error" class="has-error">{{ v$.password.$errors[0].$message }}</span>
                   </div>
+                  <span v-if="v$.password.$error" class="has-error span-error">{{ v$.password.$errors[0].$message }}</span>
                   <br/>
                   <div class="input-group-forgot"> 
                       <a href="javascript:void(0)" id="forgot_password" class="enter-class login-label" title="Forgot Password" @click="$emit('forgot')">{{ labels.forgot_label }}</a>

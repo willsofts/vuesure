@@ -7,7 +7,7 @@
       </div>
     </div>
     <div ref="sidebarlayer" id="sidebarlayer" class="sidebar-layer sidebar left">
-      <SiderMenu ref="siderMenu" :lang="accessor.lang" :menus="menuItems" @item-menu-selected="itemMenuSelected" @group-menu-selected="groupMenuSelected" />
+      <SiderMenu ref="siderMenu" :lang="accessor.lang" :menus="menuItems" :metas="menuMetas" @item-menu-selected="itemMenuSelected" @group-menu-selected="groupMenuSelected" />
     </div>
   </nav>
 </template>
@@ -19,10 +19,11 @@ import { serializeParameters } from "@willsofts/will-app";
 import { openPage } from "@/assets/js/login.util.js";
 import { accessor } from "@/assets/js/accessor.js";
 import { favorite } from "@/assets/js/favorite.js";
+import { progmap } from "@/assets/js/sider.js";
 import SiderMenu from "./SiderMenu.vue";
 
 const menuData = {sidemap: {}, sidelist: {}};
-
+const metaData = {MENU_TREE: true};
 export default {
   components: { SiderMenu },
   props: {
@@ -33,10 +34,11 @@ export default {
     },
   },
   setup() {
-    const menuItems = ref(menuData);
+    const menuItems = ref({...menuData});
+    const menuMetas = ref({...metaData});
     const searchingVisible = ref(false);
     const menuFlip = ref(true);
-    return { accessor, favorite, menuItems, searchingVisible, menuFlip };
+    return { accessor, favorite, menuItems, menuMetas, searchingVisible, menuFlip, progmap };
   },
   mounted() {
     this.$nextTick(() => {
@@ -47,6 +49,8 @@ export default {
     reset() {
       console.log("SiderBar.vue: reset ...");
       this.menuItems = {...menuData};
+      this.menuMetas = {...metaData};
+      this.progmap = {};
     },
     initialize() {
       console.log("SiderBar: initialize ...");
@@ -94,16 +98,34 @@ export default {
     initMenuItems(dataset) {
       if(!dataset) return;
       let sidelist = {};
+      let progmap = {};
+      for(let k in dataset.sidelist) {
+        let ary = dataset.sidelist[k];
+        for(let p of ary) {
+          if(!progmap[p.programid]) {
+            progmap[p.programid] = p;
+          }
+        }
+      }
       //try to remove plugin program (progtype=I)
       for(let p in dataset.sidelist) {
         let ary = dataset.sidelist[p];
         let items = ary.filter((item) => item.progtype!='I');
         if(items.length == 0) {
-        let it = dataset.sidemap[p];
-        if(it) items = [it];
+          let it = dataset.sidemap[p];
+          if(it) items = [it];
         }
         sidelist[p] = items;
       }
+      for(let g in dataset.sidemap) {
+        let item = dataset.sidemap[g];
+        let jsonmenu = undefined;
+        if(item.menutext && item.menutext.trim().length > 0) {
+            try { jsonmenu = JSON.parse(item.menutext); } catch(ex) { console.error(ex); }
+        }
+        item.jsonmenu = jsonmenu;
+      }
+      this.progmap = progmap;
       this.menuItems = {sidemap: dataset.sidemap, sidelist: sidelist };
       console.log("initMenuItems: menu items",this.menuItems);
     },
@@ -135,7 +157,8 @@ export default {
         success: (data) => { 
           console.log("loadSideBarMenu: success",data);
           if(data.body?.dataset) {
-            this.initMenuItems(data.body.dataset);            
+            this.menuMetas = {...metaData, ...data.body?.meta};
+            this.initMenuItems(data.body.dataset);   
             let jsAry = this.initSearching(language);
             if(callback) callback(jsAry);
           }
