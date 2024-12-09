@@ -38,10 +38,17 @@
                   </div>
                   <span v-if="v$.password.$error" class="has-error span-error">{{ v$.password.$errors[0].$message }}</span>
                   <br/>
-                  <div class="input-group-forgot"> 
-                      <a href="javascript:void(0)" id="forgot_password" class="enter-class login-label" title="Forgot Password" @click="$emit('forgot')">{{ labels.forgot_label }}</a>
+                  <div id="rememberlayer">
+                    <div class="row">
+                      <div class="input-remember-me col-md form-group form-check">
+                        <input ref="rememberme" type="checkbox" v-model="localData.rememberme" :true-value="1" :false-value="0" id="rememberme" class="form-control input-md form-check-input" />
+                        <label class="form-check-label" for="rememberme">{{ labels.rememberme_label }}</label>
+                      </div>
+                      <div class="input-group-forgot col-md text-right"> 
+                          <a href="javascript:void(0)" id="forgot_password" class="enter-class login-label" title="Forgot Password" @click="$emit('forgot')">{{ labels.forgot_label }}</a>
+                      </div>
+                    </div>
                   </div>
-                  <br/>										
                   <div id="login_button_layer" class="login_button_layer">
                       <button id="main_button" class="form-control input-md" @click="loginClick">{{ labels.signin_label }}</button>
                   </div>
@@ -85,6 +92,7 @@ const buildVersion = process.env.VUE_APP_BUILD_DATETIME;
 const formData = {
     username: '',
     password: '',
+    rememberme: "0",
 };
 export default {
   components: { SSOPanel },
@@ -123,12 +131,14 @@ export default {
       $(this.$refs.main_pass).on("keydown", (e) => {
         if(e.which==13) { this.connectServer(); }
       });
+      this.displayRememberUser();
     });
   },
   methods: {
     reset() {
       this.localData = {...formData};
       this.v$.$reset();
+      this.displayRememberUser();
     },
     focus() {
       this.$refs.main_username.focus();
@@ -177,9 +187,25 @@ export default {
         success: (data,status,xhr) => { 
           console.log("startLogin: responseText",xhr.responseText);
           stopWaiting();
+          this.rememberUser();
           this.loginSuccess(data);
         }
       });			
+    },
+    rememberUser() {
+      if(this.localData.rememberme=="1") {
+        localStorage.setItem("will-remember-me","1");
+        localStorage.setItem("will-remember-username",this.localData.username);
+      } else {
+        localStorage.removeItem("will-remember-me");
+        localStorage.removeItem("will-remember-username");
+      }
+    },
+    displayRememberUser() {
+      let rememberme = localStorage.getItem("will-remember-me");
+      if(rememberme) this.localData.rememberme = rememberme;
+      let rememberuser = localStorage.getItem("will-remember-username");
+      if(rememberuser) this.localData.username = rememberuser;
     },
     loginSuccess(data) {
       console.log("loginSuccess: data",data);

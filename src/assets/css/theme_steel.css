@@ -151,3 +151,4 @@ table.partition-table { background-color: slategray; }
 .favor-new-item { background-color: darkgray; }
 .pass-word { color:darkcyan; font-style: italic; }
 .go-word { color:lightseagreen; font-style: italic; }
+#rememberme { accent-color: slategray; }

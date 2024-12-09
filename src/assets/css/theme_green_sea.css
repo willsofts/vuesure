@@ -169,3 +169,4 @@ table.partition-table { background-color: #00B17E; }
 }
 .pass-word { color: darkcyan; font-style: italic; }
 .go-word { color: lightseagreen; font-style: italic; }
+#rememberme { accent-color: #00B17E; }
