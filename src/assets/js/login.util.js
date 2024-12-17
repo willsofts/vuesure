@@ -8,7 +8,7 @@ import { getBaseStorage, isSecureStorage, getCdnUrl, getImgUrl, getBaseCss, getC
 export function openPage(app,accessor,favorite,callback) {
 	return openProgram(app,accessor,favorite,callback);
 }
-const except_apps = ["page_profile","page_change","page_first","page_login","page_work","page_forgot","factor"];
+const except_apps = ["page_profile","page_change","page_first","page_login","page_work","page_forgot","factor","page_register"];
 export function openProgram(app,accessor,favorite,callback) {
 	console.log("openProgram:",app);
 	let fs_newwindows = "1" == accessor?.info?.newflag;

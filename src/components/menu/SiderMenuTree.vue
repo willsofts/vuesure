@@ -7,8 +7,7 @@
     <li v-else class="dropdown">
       <a @click="groupClick(menu)" class="nav-menu-group dropdown-toggle collapsed active" data-toggle="collapse" :data-target="'#tmenu_'+menuId" :href="'javascript:void(0);#tmenu_'+menuId">
         <em class="fa fa-list-alt"></em>&nbsp;
-        <span class="nav-label">{{ menu.text }}</span>
-        <span class="menu-group-icon fa fa-chevron-left pull-right"></span>
+        <span class="nav-label group-label">{{ menu.text }}</span>
       </a>
       <ul :id="'tmenu_'+menuId" class="sub-menu panel-collapse collapse" role="menu" v-if="hasItems">    
         <template v-for="(item,index) in menu.items" :key="index">

@@ -3,8 +3,7 @@
     <li class="dropdown" v-for="(value,key,counter) in menus.sidemap" :key="key">
         <a @click="$emit('group-menu-selected', value)" class="nav-menu-group dropdown-toggle collapsed active" data-toggle="collapse" :data-target="'#submenu_'+counter" href="javascript:void(0);">
             <em :class="getDisplayGroupStyle(value)"></em>&nbsp;
-            <span class="nav-label">{{ getDisplayGroupName(value) }}</span>
-            <span class="menu-group-icon fa fa-chevron-left pull-right"></span>
+            <span class="nav-label group-label">{{ getDisplayGroupName(value) }}</span>
         </a>
         <ul :id="'submenu_'+counter" class="sub-menu panel-collapse collapse" role="menu">
             <template v-if="hasMenuTree(value)">
