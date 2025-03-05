@@ -15,8 +15,15 @@
                     <div class="col-md-3 col-height col-label">
                         <label id="oldpassword_label" class="control-label" required="true">{{ labels.oldpassword_label }}</label>
                     </div>
-                    <div class="col-md-3 col-height" :class="{'has-error': v$.oldpassword.$error}">
-                        <input v-model="localData.oldpassword" ref="oldpassword" type="password" class="form-control input-md alert-input" id="oldpassword" name="oldpassword" :placeholder="labels.oldpassword_label" autocomplete="off" size="8" />
+                    <div class="col-md-4 col-height" :class="{'has-error': v$.oldpassword.$error}">
+                        <div class="input-group">
+                          <input v-model="localData.oldpassword" ref="oldpassword" type="password" class="form-control input-md alert-input" id="oldpassword" name="oldpassword" :placeholder="labels.oldpassword_label" autocomplete="off" size="8" />
+                          <div class="input-group-append">
+                            <a href="#0" class="btn btn-outline-secondarys btn-eye" ref="toggleoldpasswordbutton" @click="togglePassword($refs.toggleoldpasswordbutton, $refs.oldpassword, $refs.oldeyeslash)">
+                              <i class="fa fa-eye-slash" ref="oldeyeslash"></i>
+                            </a>
+                          </div>
+                        </div>
                         <span v-if="v$.oldpassword.$error" class="has-error">{{ v$.oldpassword.$errors[0].$message }}</span>
                     </div>
                 </div>
@@ -24,8 +31,15 @@
                     <div class="col-md-3 col-height col-label text-right">
                         <label id="userpassword_label" class="control-label" required="true">{{ labels.userpassword_label }}</label>
                     </div>
-                    <div class="col-md-3 col-height" :class="{'has-error': v$.userpassword.$error}">
-                        <input v-model="localData.userpassword" ref="userpassword" type="password" class="form-control input-md alert-input" id="userpassword" name="userpassword" :placeholder="labels.userpassword_label" autocomplete="off" size="8" data-toggle="tooltip" title="Password can combine with alphabets and numeric sign not over 8 characters"/>
+                    <div class="col-md-4 col-height" :class="{'has-error': v$.userpassword.$error}">
+                        <div class="input-group">
+                          <input v-model="localData.userpassword" ref="userpassword" type="password" class="form-control input-md alert-input" id="userpassword" name="userpassword" :placeholder="labels.userpassword_label" autocomplete="off" size="8" data-toggle="tooltip" title="Password can combine with alphabets and numeric sign not over 8 characters"/>
+                          <div class="input-group-append">
+                            <a href="#0" class="btn btn-outline-secondarys btn-eye" ref="toggleuserpasswordbutton" @click="togglePassword($refs.toggleuserpasswordbutton, $refs.userpassword, $refs.usereyeslash)">
+                              <i class="fa fa-eye-slash" ref="usereyeslash"></i>
+                            </a>
+                          </div>
+                        </div>
                         <span v-if="v$.userpassword.$error" class="has-error">{{ v$.userpassword.$errors[0].$message }}</span>
                     </div>
                 </div>
@@ -33,8 +47,15 @@
                     <div class="col-md-3 col-height col-label text-right">
                         <label id="confirmpassword_label" class="control-label" required="true">{{ labels.confirmpassword_label }}</label>
                     </div>
-                    <div class="col-md-3 col-height" :class="{'has-error': v$.confirmpassword.$error}">
-                        <input v-model="localData.confirmpassword" ref="confirmpassword" type="password" class="form-control input-md alert-input" id="confirmpassword" name="confirmpassword" :placeholder="labels.confirmpassword_label" autocomplete="off" size="8" data-toggle="tooltip" title="Password can combine with alphabets and numeric sign not over 8 characters"/>
+                    <div class="col-md-4 col-height" :class="{'has-error': v$.confirmpassword.$error}">
+                        <div class="input-group">
+                          <input v-model="localData.confirmpassword" ref="confirmpassword" type="password" class="form-control input-md alert-input" id="confirmpassword" name="confirmpassword" :placeholder="labels.confirmpassword_label" autocomplete="off" size="8" data-toggle="tooltip" title="Password can combine with alphabets and numeric sign not over 8 characters"/>
+                          <div class="input-group-append">
+                            <a href="#0" class="btn btn-outline-secondarys btn-eye" ref="toggleconfirmpasswordbutton" @click="togglePassword($refs.toggleconfirmpasswordbutton, $refs.confirmpassword, $refs.confirmeyeslash)">
+                              <i class="fa fa-eye-slash" ref="confirmeyeslash"></i>
+                            </a>
+                          </div>
+                        </div>
                         <span v-if="v$.confirmpassword.$error" class="has-error">{{ v$.confirmpassword.$errors[0].$message }}</span>
                     </div>
                 </div>
@@ -227,6 +248,17 @@ export default {
       this.reset();
       this.focus();
       console.log("ChangeForm.vue: changedMode",this.changedMode);
+    },
+    togglePassword(toggleBtn,passwordField,icon) {
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      } else {
+        passwordField.type = "password";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      }
     },
   },
 };

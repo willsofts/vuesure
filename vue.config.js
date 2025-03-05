@@ -5,7 +5,7 @@ module.exports = defineConfig({
   pages: {
     index: {
       entry: 'src/vuesure.js',
-      title: 'Vue Sure',
+      title: 'Assure',
     }
   },
   transpileDependencies: true,
