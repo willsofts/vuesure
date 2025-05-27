@@ -2,16 +2,22 @@ import $ from "jquery"
 import { startWaiting, openNewWindow, submitWindow, closeChildWindows, getMultiLanguages }  from '@willsofts/will-app'
 import { getApiUrl, getBaseUrl, getDefaultLanguage,  DEFAULT_CONTENT_TYPE, setMultiLanguages } from "@willsofts/will-app";
 import { getAccessorToken, removeAccessorInfo, getAccessorInfo, saveAccessorInfo, getStorage, removeStorage, setupDiffie, setCurrentWindow } from "@willsofts/will-app";
-import { setApiUrl, setBaseUrl, setCdnUrl, setImgUrl, setDefaultLanguage, setApiToken, setBaseStorage, setSecureStorage, setBaseCss, setChatUrl } from "@willsofts/will-app";
+import { setTokenKey, setApiUrl, setBaseUrl, setCdnUrl, setImgUrl, setDefaultLanguage, setApiToken, setBaseStorage, setSecureStorage, setBaseCss, setChatUrl } from "@willsofts/will-app";
 import { getBaseStorage, isSecureStorage, getCdnUrl, getImgUrl, getBaseCss, getChatUrl, getDefaultRawParameters, setDefaultRawParameters, createLinkStyle } from "@willsofts/will-app";
 
+function isValidUrl(url) {
+    try {
+        new URL(url);
+        return true;
+    } catch (err) { return false; }
+}
 export function openPage(app,accessor,favorite,callback) {
 	return openProgram(app,accessor,favorite,callback);
 }
 const except_apps = ["page_profile","page_change","page_first","page_login","page_work","page_forgot","factor","page_register"];
 export function openProgram(app,accessor,favorite,callback) {
 	console.log("openProgram:",app);
-	let fs_newwindows = "1" == accessor?.info?.newflag;
+	let fs_newwindows = "1" == accessor?.info?.newflag || "1" == app.newflag;
 	let appid = app.programid;
 	let url = app.url;
 	let params = app.parameters;
@@ -20,16 +26,24 @@ export function openProgram(app,accessor,favorite,callback) {
 	let html = false; 
 	if(apath && apath.trim().length >0) {
 		appurl = getBaseUrl() + apath;
+		if(isValidUrl(apath)) {
+			appurl = apath;
+		}
 		html = apath.indexOf(".html") > 0;
 	}
 	if(url && url.trim().length > 0) {
 		//appurl = getBaseUrl()+"/load/"+appid; 
 		appurl = url + "/" + appid;
 		if(apath && apath.trim().length >0) {
-			appurl = url + apath;
+			if(isValidUrl(apath)) {
+				appurl = apath;
+			} else {
+				appurl = url + apath;
+			}
 		}
 	}
 	console.log("openProgram: app url",appurl);
+	html = app.openmethod == "GET" ? "GET" : html;
 	let authtoken = getAccessorToken();
 	let awin;
 	if(fs_newwindows) {
@@ -179,9 +193,10 @@ export function loadAppConfig() {
 		assignAppConfig(data);
 	}).catch(err => console.error(err));
 }
-export function assignAppConfig(data) {
+export function assignAppConfig(data,callback) {
 	console.log("appConfig: data",data);
 	if(!data) return;
+	if(data.TOKEN_KEY !== undefined) setTokenKey(data.TOKEN_KEY);
 	if(data.API_URL !== undefined) setApiUrl(data.API_URL);
 	if(data.BASE_URL !== undefined) setBaseUrl(data.BASE_URL);
 	if(data.CDN_URL !== undefined) setCdnUrl(data.CDN_URL);
@@ -197,9 +212,10 @@ export function assignAppConfig(data) {
 	console.info("appConfig: DEFAULT_LANGUAGE="+getDefaultLanguage(),", BASE_STORAGE="+getBaseStorage(),", DEFAULT_RAW_PARAMETERS="+getDefaultRawParameters(),", SECURE_STORAGE="+isSecureStorage());
 	console.info("appConfig: API_URL="+getApiUrl(),", BASE_URL="+getBaseUrl(),", CDN_URL="+getCdnUrl(),", IMG_URL="+getImgUrl()+", BASE_CSS="+getBaseCss()+", CHAT_URL="+getChatUrl()+", MULTI_LANGUAGES="+getMultiLanguages());
 	createLinkStyle(getBaseCss());
+	if(callback) callback(data);
 }
-export function initAppConfig() {
+export function initAppConfig(callback) {
 	try {
-		assignAppConfig(window.getAppConfigs());
+		assignAppConfig(window.getAppConfigs(),callback);
 	} catch(ex) { console.error(ex); }
 }
