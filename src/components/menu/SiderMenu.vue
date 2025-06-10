@@ -8,7 +8,7 @@
         <ul :id="'submenu_'+counter" class="sub-menu panel-collapse collapse" role="menu">
             <template v-if="hasMenuTree(value)">
                 <template v-for="(menu,index) in value.jsonmenu.items" :key="index">
-                    <SiderMenuTree :menu="menu" @menu-selected="menuSelected" :menuId="getMenuId()"/>
+                    <SiderMenuTree :menu="menu" @menu-selected="menuSelected" :menuId="getMenuId()" :lang="lang"/>
                 </template>
             </template>
             <template v-else>

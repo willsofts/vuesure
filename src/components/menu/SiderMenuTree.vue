@@ -1,7 +1,7 @@
 <template>
     <li v-if="hasProg">
       <a href="javascript:void(0);" @click="menuClick(menu)" class="fa-link-menu-item menu-desktop" :data-pid="menu.itemname" :data-url="prog?.url" :data-path="prog?.progpath" :title="menu.itemname">
-        {{ menu.text }}
+        {{ getDisplayMenuName(menu) }}
       </a>
     </li>
     <li v-else class="dropdown">
@@ -11,7 +11,7 @@
       </a>
       <ul :id="'tmenu_'+menuId" class="sub-menu panel-collapse collapse" role="menu" v-if="hasItems">    
         <template v-for="(item,index) in menu.items" :key="index">
-          <SiderMenuTree :menu="item" :menuId="getMenuId()" @menu-selected="menuSelected" @group-selected="groupSelected" />
+          <SiderMenuTree :menu="item" :menuId="getMenuId()" @menu-selected="menuSelected" @group-selected="groupSelected" :lang="lang" />
         </template>    
       </ul>
     </li>
@@ -24,6 +24,7 @@ export default {
     props: {
       menu: Object,
       menuId: String,
+      lang: String,
     },
     setup() {
       return { progmap };
@@ -41,6 +42,9 @@ export default {
     },
     methods: {
         getMenuId() { return randomNumber()+"_"+new Date().getTime(); },
+        getDisplayMenuName(item) {
+          return this.$props.lang === 'TH' ? item.caption || item.text : item.text;
+        },
         menuClick(item) {
           let prog = this.progmap[item.itemname];
           console.log("menu click",item,"prog",prog);
