@@ -4,6 +4,14 @@ body {
 /* user color */
 #fsprogramidlinker { color: white; text-decoration: none; }
 .pt-page th a { color: white; }
+.login_form button:focus,
+.login_form button:hover{
+	background: #5d77ff;
+	color: white;
+}
+.login_form button {
+	border-color: #5d77ff;
+}
 .login_form input[type="button"]{
 	background-color: whitesmoke;
 	border-color: #5d77ff;
