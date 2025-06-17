@@ -1,6 +1,7 @@
 body {
 	background: #EEF0F8;
 }
+.body-login { background: white; }
 /* user color */
 #fsprogramidlinker { color: white; text-decoration: none; }
 .pt-page th a { color: white; }
@@ -170,7 +171,8 @@ table.partition-table { background-color: #dee2e6; }
 	}
 }	
 .login-input-field input:focus ~ label , .login-input-field input:valid ~ label {
-	background-color: #EEF0F8;
+	/*background-color: #EEF0F8;*/
+	background-color: white;
 }
 
 /* after login */

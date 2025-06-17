@@ -1,5 +1,5 @@
 <template>
-<div id="factor_verify" class="pt-page pt-page-current forcer-page">
+<div id="factor_verify" class="pt-page forcer-page pt-page-controller">
   <h1 class="page-header-title" title="2FA Verification">{{ labels.factor_caption }}</h1>
 	<div id="factor_entrypanel">
     <div id="factor_entrylayer" class="entry-layer">
@@ -66,7 +66,7 @@
 .qr-image-layer { text-align:center; min-height: 300px; margin-top: 20px; }
 .factor-code-layer { min-height: 100px; }
 .factor-link-layer { margin-top:10px; }
-.forcer-page { max-width: 95%; display: block; margin-left: auto; margin-right: auto; }
+.forcer-page { max-width: 95%; display: block; margin-left: auto; margin-right: auto; margin-top: 10px; }
 .qr-body { background-color: whitesmoke; }
 </style>
 <script>

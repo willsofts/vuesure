@@ -13,6 +13,7 @@
   </div>
 </template>
 <script>
+import $ from "jquery";
 import { ref } from 'vue';
 import { startApplication }  from '@willsofts/will-app';
 import { getLabelModel } from "@willsofts/will-app";
@@ -104,6 +105,7 @@ export default {
       this.verifyAfterLogin(info);
     },
     displayMenu() {
+      $(window.document.body).removeClass("body-login");
       this.mode = "";
       this.currentForcePage = BlankForm;
       this.isShowing = true;
@@ -127,6 +129,7 @@ export default {
       this.$refs.workerFrame.showWorkerMenu();
     },
     goLogOut() {
+      $(window.document.body).addClass("body-login");
       logOut({...this.accessor.info});
       this.$refs.workerFrame.reset();
       this.$refs.headerBar.reset();
@@ -141,6 +144,7 @@ export default {
       stopReceiveBroadcast();
     },
     goLogIn() {
+      $(window.document.body).addClass("body-login");
       this.isShowing = true;
       this.mode = "";
       this.currentForcePage = BlankForm;
