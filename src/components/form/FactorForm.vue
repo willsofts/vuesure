@@ -75,8 +75,7 @@ import { ref, computed, watch, onActivated } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required, helpers } from '@vuelidate/validators';
 import { DEFAULT_CONTENT_TYPE, getApiUrl }  from '@willsofts/will-app';
-import { startWaiting, stopWaiting, alertbox, submitFailure }  from '@willsofts/will-app';
-import { getAccessorToken } from "@willsofts/will-app";
+import { startWaiting, stopWaiting, alertbox, submitFailure, serializeParameters }  from '@willsofts/will-app';
 import { accessor } from "@/assets/js/accessor.js";
 
 const formData = {
@@ -164,13 +163,15 @@ export default {
       }
     },
     loadQRCode() {
-      let formdata = { factorid: this.localData.factorid, authtoken: getAccessorToken() };
+      let params = { factorid: this.localData.factorid };
+      let formdata = serializeParameters({ajax: true},params,true);
       console.log("FactorForm.vue loadQRCode: alreadyLoaded=",this.alreadyLoaded,", formdata",formdata);
       if(this.alreadyLoaded) return;
       startWaiting();
       $.ajax({
           url: getApiUrl()+"/api/factor/get",
-          data: JSON.stringify(formdata),
+          data: formdata.jsondata,
+          headers : formdata.headers,
           type: "POST",
           dataType: "json",
           contentType: DEFAULT_CONTENT_TYPE,
@@ -198,12 +199,13 @@ export default {
     },
     submitRecord(dataRecord) {
       let jsondata = {ajax: true};
-      let formdata = Object.assign(jsondata,dataRecord);
+      let formdata = serializeParameters(jsondata,dataRecord);
       console.log("submitRecord: formdata",formdata);
       startWaiting();
       $.ajax({
         url: getApiUrl()+"/api/factor/verify",
-        data: JSON.stringify(formdata),
+        data: formdata.jsondata,
+        headers : formdata.headers,
         type: "POST",
         dataType: "json",
         contentType: DEFAULT_CONTENT_TYPE,
