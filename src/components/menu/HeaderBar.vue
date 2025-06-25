@@ -64,7 +64,7 @@ import { ref } from 'vue';
 import SiderBar from "./SiderBar.vue";
 import FavorMenu from "./FavorMenu.vue";
 import RecentMenu from "./RecentMenu.vue";
-import { setDefaultLanguage, getMultiLanguagesModel, registerNotification } from "@willsofts/will-app";
+import { setDefaultLanguage, getMultiLanguagesModel, registerNotification, sendMessageToFrame } from "@willsofts/will-app";
 import { accessor } from "@/assets/js/accessor.js";
 
 export default {
@@ -115,6 +115,7 @@ export default {
         this.accessor.lang = lang;
         this.$refs.siderBar.changeLanguage(lang);
         this.$emit('language-changed', lang);
+        sendMessageToFrame({type:"language",language:lang});
     },
     setting(callback) {
         console.log("HeaderBar: setting, accessor",this.accessor);
