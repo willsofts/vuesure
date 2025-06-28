@@ -16,7 +16,7 @@
 import $ from "jquery";
 import { ref } from 'vue';
 import { startApplication }  from '@willsofts/will-app';
-import { getLabelModel } from "@willsofts/will-app";
+import { getLabelModel, loadAndMergeLabel, getDefaultLanguage, getMetaInfo } from "@willsofts/will-app";
 import { refreshScreen, logOut, validAccessToken, openPage } from "@/assets/js/login.util.js";
 import { removeAccessorInfo } from "@willsofts/will-app";
 import { accessor } from "@/assets/js/accessor.js";
@@ -59,12 +59,28 @@ export default {
 					this.verifyAfterLogin(json.body);
 				}
 			});
+      /**
+       * This try to load label and message code from server (api label & msgcode)
+       * in case of server except authorize label & msgcode service 
+       * then define default.js with META_INFO.ALLOW_LOAD_LABEL = true too       
+       * in the other way this will load label after login success
+       * */ 
+      if(String(getMetaInfo().ALLOW_LOAD_LABEL)=="true") {
+        this.loadLabel();
+      }
     });
   },
   methods: {
     changeLanguage(lang) {
       let labelModel = getLabelModel(lang);
       this.labels = labelModel;
+    },
+    loadLabel() {
+      loadAndMergeLabel("vindex", (success) => {
+        if (success) {
+          this.changeLanguage(getDefaultLanguage());
+        }
+      });
     },
     verifyAfterLogin(body) {
       console.log("verifyAfterLogin: body",body);
@@ -77,6 +93,7 @@ export default {
       } else {
         this.verifyForcePage(body);
       }
+      this.loadLabel();
     },
     verifyForcePage(body) {
       if(body?.changeflag=="1") {
