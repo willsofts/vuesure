@@ -137,7 +137,7 @@ export default {
     },
     showAvatar(avatar) {
         if(avatar && avatar.trim().length > 0) {
-            let data = avatar.indexOf("data") >= 0;
+            let data = avatar.indexOf("data:") >= 0;
             $("#avatarimage").removeClass("img-avatar");
             $("#avatarimage").attr("src",data ? avatar : getImgUrl()+avatar);
         }
