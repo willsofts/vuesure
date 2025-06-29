@@ -64,7 +64,8 @@ import { ref } from 'vue';
 import SiderBar from "./SiderBar.vue";
 import FavorMenu from "./FavorMenu.vue";
 import RecentMenu from "./RecentMenu.vue";
-import { setDefaultLanguage, getMultiLanguagesModel, registerNotification, sendMessageToFrame } from "@willsofts/will-app";
+import { setDefaultLanguage, getMultiLanguagesModel, registerNotification } from "@willsofts/will-app";
+import { DEFAULT_CONTENT_TYPE, getImgUrl, getApiUrl, getAccessorToken, sendMessageToFrame } from "@willsofts/will-app";
 import { accessor } from "@/assets/js/accessor.js";
 
 export default {
@@ -104,6 +105,7 @@ export default {
         console.log("HeaderVar.vue: reset ...");
         this.$refs.favorMenu.reset();
         this.$refs.siderBar.reset();
+        this.clearAvatar();
     },
     menuSelected(menu) {
         if("menu"==menu) { this.$refs.siderBar.displaySideBarMenu(); }
@@ -121,11 +123,39 @@ export default {
         console.log("HeaderBar: setting, accessor",this.accessor);
         let avatar = this.accessor.info?.avatar;
         if(avatar && avatar.trim().length > 0) {
-            $("#avatarimage").attr("src",avatar);
+            this.showAvatar(avatar);
+        } else {
+            this.fetchAvatar(this.accessor.info?.userid,this.accessor.info?.photoimage);
         }
         this.$refs.favorMenu.setting();
         this.$refs.siderBar.setting(callback);
         this.$refs.siderBar.show();
+    },
+    clearAvatar() {
+        $("#avatarimage").attr("src","");
+        $("#avatarimage").addClass("img-avatar");
+    },
+    showAvatar(avatar) {
+        if(avatar && avatar.trim().length > 0) {
+            let data = avatar.indexOf("data") >= 0;
+            $("#avatarimage").removeClass("img-avatar");
+            $("#avatarimage").attr("src",data ? avatar : getImgUrl()+avatar);
+        }
+    },
+    fetchAvatar(userid,photoimage) {
+        let authtoken = getAccessorToken();
+        console.log("fetchAvatar: userid="+userid);
+        $.ajax({ 
+            url : getApiUrl()+"/api/avatar/image", 
+            data: JSON.stringify({ userid: userid, photoimage: photoimage }), 
+            headers : { "authtoken": authtoken }, 
+            type : "POST",
+            dataType: "json",
+            contentType: DEFAULT_CONTENT_TYPE,
+            success: (data) => { 
+                this.showAvatar(data?.avatar);
+            }
+        });
     },
     showLanguage() { this.languageVisible = true; },
     hideLanguage() { this.languageVisible = false; },
